@@ -9,26 +9,35 @@
 # Base: fedora-bootc (systemd + kernel + dnf, no desktop) — 1.0 GB compressed
 # vs Silverblue (full GNOME desktop + apps) — 2.5 GB compressed
 
-FROM quay.io/fedora/fedora-bootc:43
+# One Fedora release, declared once. atomic.yml tags the image `:43` from its own
+# FEDORA_VERSION env and passes it here as a build arg, so the tag and the base
+# cannot drift apart; the guard below fails the build if the base that was
+# pulled is not the release the tag claims.
+ARG FEDORA_VERSION=43
+FROM quay.io/fedora/fedora-bootc:${FEDORA_VERSION}
+# Re-declared after FROM: an ARG before FROM is out of scope in the build stage.
+ARG FEDORA_VERSION=43
+RUN . /etc/os-release && [ "$VERSION_ID" = "${FEDORA_VERSION}" ] || \
+    { echo "FATAL: base is Fedora ${VERSION_ID:-?}, build asked for ${FEDORA_VERSION}" >&2; exit 1; }
 
 # Global dnf optimization: skip docs and weak deps (saves ~300-500 MB)
 RUN echo -e "tsflags=nodocs\ninstall_weak_deps=False" >> /etc/dnf/dnf.conf
 
 # RPM Fusion free + nonfree (retry on mirror timeout)
 RUN dnf install -y \
-    https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-43.noarch.rpm \
-    https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-43.noarch.rpm && \
+    https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-${FEDORA_VERSION}.noarch.rpm \
+    https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-${FEDORA_VERSION}.noarch.rpm && \
     dnf clean all || \
     (echo "Retrying with direct download mirror..." && \
      dnf install -y \
-       https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-43.noarch.rpm \
-       https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-43.noarch.rpm && \
+       https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-${FEDORA_VERSION}.noarch.rpm \
+       https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-${FEDORA_VERSION}.noarch.rpm && \
      dnf clean all)
 
 # Xiboplayer repos (adds keyd COPR + GPG key)
 ARG RELEASE_VER=43-7
 RUN dnf install -y \
-    https://github.com/xiboplayer/xiboplayer.github.io/releases/download/v${RELEASE_VER}/xiboplayer-release-${RELEASE_VER}.fc43.noarch.rpm && \
+    https://github.com/xiboplayer/xiboplayer.github.io/releases/download/v${RELEASE_VER}/xiboplayer-release-${RELEASE_VER}.fc${FEDORA_VERSION}.noarch.rpm && \
     dnf clean all
 
 # Display manager + kiosk compositor (minimal GNOME, no apps)

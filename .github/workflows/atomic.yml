@@ -111,6 +111,7 @@ jobs:
         run: |
           IMG="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}"
           podman build \
+            --build-arg FEDORA_VERSION="${{ env.FEDORA_VERSION }}" \
             --tag "${IMG}:${{ env.FEDORA_VERSION }}-x86_64" \
             ${VERSION:+--tag "${IMG}:${VERSION}-x86_64"} \
             -f atomic/Containerfile .
@@ -142,6 +143,7 @@ jobs:
         run: |
           IMG="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}"
           podman build \
+            --build-arg FEDORA_VERSION="${{ env.FEDORA_VERSION }}" \
             --tag "${IMG}:${{ env.FEDORA_VERSION }}-aarch64" \
             ${VERSION:+--tag "${IMG}:${VERSION}-aarch64"} \
             -f atomic/Containerfile .
