@@ -132,8 +132,13 @@ RUN systemctl preset-all && \
     systemctl enable gdm.service avahi-daemon.service keyd.service && \
     systemctl set-default graphical.target
 
-# Automatic updates via bootc
-RUN systemctl enable bootc-fetch-apply-updates.timer || true
+# Automatic updates via bootc. The drop-in pins the apply (and its reboot) to
+# a quiet hour — see the file's own header. `is-enabled` is the positive
+# control: the old `|| true` let a missing unit pass as an enabled one, and
+# the release notes promise automatic updates on the strength of this line.
+COPY mkosi-extra/usr/lib/systemd/system/bootc-fetch-apply-updates.timer.d/10-update-window.conf /usr/lib/systemd/system/bootc-fetch-apply-updates.timer.d/10-update-window.conf
+RUN systemctl enable bootc-fetch-apply-updates.timer && \
+    systemctl is-enabled bootc-fetch-apply-updates.timer
 
 # Final size cleanup
 RUN rm -rf /usr/share/man /usr/share/doc /usr/share/info /usr/share/gtk-doc \
