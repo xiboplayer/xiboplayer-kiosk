@@ -1,7 +1,7 @@
-#version=F43
+#version=F44
 # Xibo Kiosk Kickstart File
 # =============================
-# Automated Fedora 43 installation for Xibo digital signage
+# Automated Fedora 44 installation for Xibo digital signage
 #
 # Usage:
 #   Boot from Fedora netinstall and add to kernel cmdline:
@@ -12,7 +12,7 @@
 # Installation source — Fedora mirror for netinstall, cdrom for Everything ISO
 # Anaconda auto-detects cdrom when booting from Everything ISO and ignores url.
 # For netinstall, the mirrorlist provides automatic mirror selection.
-url --mirrorlist=https://mirrors.fedoraproject.org/mirrorlist?repo=fedora-43&arch=$basearch
+url --mirrorlist=https://mirrors.fedoraproject.org/mirrorlist?repo=fedora-44&arch=$basearch
 
 # Installation settings
 #
@@ -140,8 +140,8 @@ jq
 %post --erroronfail
 # Add RPMFusion repos
 dnf install -y \
-  https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-43.noarch.rpm \
-  https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-43.noarch.rpm
+  https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-44.noarch.rpm \
+  https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-44.noarch.rpm
 
 # Swap ffmpeg-free for full ffmpeg (all codecs)
 dnf swap -y ffmpeg-free ffmpeg --allowerasing || true
@@ -169,7 +169,7 @@ dnf install -y \
 # All subsequent dnf installs verify GPG normally.
 dnf install -y --nogpgcheck xiboplayer-release || \
   dnf install -y --nogpgcheck \
-  https://dl.xiboplayer.org/rpm/fedora/43/noarch/xiboplayer-release-43-7.fc43.noarch.rpm
+  https://dl.xiboplayer.org/rpm/fedora/44/noarch/xiboplayer-release-44-7.fc44.noarch.rpm
 
 # Install the default players — the boot menu selects the default via xibo.profile=
 # Profiles: chromium (default), electron. Arexibo is netinstall opt-in only —

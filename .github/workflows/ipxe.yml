@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  FEDORA_VERSION: '43'
+  FEDORA_VERSION: '44'
 
 jobs:
   build-ipxe:
