@@ -22,7 +22,7 @@ name: Test Kiosk Image
 #
 # Customizations applied for test builds (not production):
 #
-#   - Grub menu entries are renamed from "Install Fedora 43" →
+#   - Grub menu entries are renamed from "Install Fedora 44" →
 #     "Install xiboplayer kiosk" (and similarly for every other
 #     entry) via a single iso-grub-replacements substitution.
 #   - `quiet` / `rhgb` / `splash` are removed from the installer
@@ -52,7 +52,7 @@ concurrency:
 
 jobs:
   build:
-    uses: xiboplayer/.github/.github/workflows/build-iso.yml@e8649f4861f729365d7f15c9f5715f5df64dc2c7  # main
+    uses: xiboplayer/.github/.github/workflows/build-iso.yml@d45405effe79137428f7665352f506e617d289f6  # xiboplayer/.github#64 (ci/fedora-45)
     with:
       package-name: xiboplayer-kiosk
       kickstart-file: 'kickstart/xiboplayer-kiosk.ks'
@@ -69,9 +69,9 @@ jobs:
 
       # ── Branded boot menu via mkksiso -R (same as production) ──
       iso-grub-replacements: |
-        Install Fedora 43|Install xiboplayer kiosk
-        Test this media & install Fedora 43|Test media and install xiboplayer kiosk
-        Install Fedora 43 in basic graphics mode|Install xiboplayer kiosk (basic graphics)
+        Install Fedora 44|Install xiboplayer kiosk
+        Test this media & install Fedora 44|Test media and install xiboplayer kiosk
+        Install Fedora 44 in basic graphics mode|Install xiboplayer kiosk (basic graphics)
         Rescue a Fedora system|Rescue xiboplayer kiosk system
         set default="1"|set default="0"
       # Volume ID kept at Fedora default so Boxes/libosinfo auto-detects

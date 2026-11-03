@@ -3,32 +3,32 @@
 # Minimal bootc-based image: fedora-bootc + gdm + gnome-kiosk + codecs + players.
 # ~1.5 GB smaller than Silverblue-based image by starting from a minimal base.
 #
-# Build:  podman build -t ghcr.io/xiboplayer/xiboplayer-kiosk:43 -f atomic/Containerfile .
-# Update: bootc switch --transport registry ghcr.io/xiboplayer/xiboplayer-kiosk:43
+# Build:  podman build -t ghcr.io/xiboplayer/xiboplayer-kiosk:44 -f atomic/Containerfile .
+# Update: bootc switch --transport registry ghcr.io/xiboplayer/xiboplayer-kiosk:44
 #
 # Base: fedora-bootc (systemd + kernel + dnf, no desktop) — 1.0 GB compressed
 # vs Silverblue (full GNOME desktop + apps) — 2.5 GB compressed
 
-FROM quay.io/fedora/fedora-bootc:43
+FROM quay.io/fedora/fedora-bootc:44
 
 # Global dnf optimization: skip docs and weak deps (saves ~300-500 MB)
 RUN echo -e "tsflags=nodocs\ninstall_weak_deps=False" >> /etc/dnf/dnf.conf
 
 # RPM Fusion free + nonfree (retry on mirror timeout)
 RUN dnf install -y \
-    https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-43.noarch.rpm \
-    https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-43.noarch.rpm && \
+    https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-44.noarch.rpm \
+    https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-44.noarch.rpm && \
     dnf clean all || \
     (echo "Retrying with direct download mirror..." && \
      dnf install -y \
-       https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-43.noarch.rpm \
-       https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-43.noarch.rpm && \
+       https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-44.noarch.rpm \
+       https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-44.noarch.rpm && \
      dnf clean all)
 
 # Xiboplayer repos (adds keyd COPR + GPG key)
-ARG RELEASE_VER=43-7
+ARG RELEASE_VER=44-7
 RUN dnf install -y \
-    https://github.com/xiboplayer/xiboplayer.github.io/releases/download/v${RELEASE_VER}/xiboplayer-release-${RELEASE_VER}.fc43.noarch.rpm && \
+    https://dl.xiboplayer.org/rpm/fedora/44/noarch/xiboplayer-release-${RELEASE_VER}.fc44.noarch.rpm && \
     dnf clean all
 
 # Display manager + kiosk compositor (minimal GNOME, no apps)

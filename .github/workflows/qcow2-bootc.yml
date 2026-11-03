@@ -13,7 +13,7 @@ permissions:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: xiboplayer/xiboplayer-kiosk
-  FEDORA_VERSION: '43'
+  FEDORA_VERSION: '44'
 
 concurrency:
   group: "${{ github.workflow }}-${{ github.ref }}"
@@ -54,7 +54,7 @@ jobs:
             --security-opt label=disable \
             -v /var/lib/containers/storage:/var/lib/containers/storage \
             -v ./output:/output \
-            quay.io/centos-bootc/bootc-image-builder:latest \
+            quay.io/centos-bootc/bootc-image-builder@sha256:4d8a0d9d173a9f450ff42d70777e1e0a6681a68f5c0f5084b65222eceb1f4d05 \
             --type qcow2 \
             --rootfs ext4 \
             --local \

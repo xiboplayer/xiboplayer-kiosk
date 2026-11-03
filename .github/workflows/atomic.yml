@@ -17,7 +17,7 @@ permissions:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: xiboplayer/xiboplayer-kiosk
-  FEDORA_VERSION: '43'
+  FEDORA_VERSION: '44'
 
 concurrency:
   group: "${{ github.workflow }}-${{ github.ref }}"
@@ -58,7 +58,7 @@ jobs:
     timeout-minutes: 15
     if: startsWith(github.ref, 'refs/tags/v')
     container:
-      image: fedora:43
+      image: fedora:44
     steps:
       - name: Poll the repository for the tag's RPM
         env:
@@ -226,7 +226,7 @@ jobs:
             --security-opt label=type:unconfined_t \
             -v ./output:/output \
             -v /var/lib/containers/storage:/var/lib/containers/storage \
-            quay.io/centos-bootc/bootc-image-builder:latest \
+            quay.io/centos-bootc/bootc-image-builder@sha256:4d8a0d9d173a9f450ff42d70777e1e0a6681a68f5c0f5084b65222eceb1f4d05 \
             --rootfs ext4 \
             --local \
             --type iso \
@@ -290,7 +290,7 @@ jobs:
             --security-opt label=type:unconfined_t \
             -v ./output:/output \
             -v /var/lib/containers/storage:/var/lib/containers/storage \
-            quay.io/centos-bootc/bootc-image-builder:latest \
+            quay.io/centos-bootc/bootc-image-builder@sha256:4d8a0d9d173a9f450ff42d70777e1e0a6681a68f5c0f5084b65222eceb1f4d05 \
             --rootfs ext4 \
             --local \
             --type iso \
@@ -399,7 +399,7 @@ jobs:
 
           ## What's included
 
-          - **Fedora bootc 43** (immutable, container-native updates)
+          - **Fedora bootc 44** (immutable, container-native updates)
           - **Full codecs**: ffmpeg, gstreamer, VA-API
           - **Players**: xiboplayer-electron, xiboplayer-chromium (arexibo available via netinstall — pass \`xibo.profile=arexibo\` on the kernel cmdline)
           - **Multimedia**: VLC, mpv, GNOME Showtime
@@ -418,7 +418,7 @@ jobs:
 
           To update manually or switch from the traditional image:
           ```
-          bootc switch ghcr.io/xiboplayer/xiboplayer-kiosk:43
+          bootc switch ghcr.io/xiboplayer/xiboplayer-kiosk:44
           systemctl reboot
           ```
 
