@@ -61,7 +61,7 @@ jobs:
       contents: write
     steps:
       - name: Check out main
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@v7.0.1
         with:
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
