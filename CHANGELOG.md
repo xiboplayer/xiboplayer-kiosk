@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.4 (2026-11-18)
+
+Packaging-only release. RPMs are now built for **Fedora 44 and 45**.
+
 ## 0.5.3 (2026-09-05)
 
 Packaging-only release. RPMs are now built for **Fedora 43 and 44**, and are published to the repository only from tag builds (pushes to main had been overwriting the 0.5.2-6 RPM on R2 without re-indexing, breaking `dnf install` with a checksum mismatch and with it the nightly atomic image build). Reusable workflow pins moved to `xiboplayer/.github@cb1cc45`, whose notify step dispatches `update-repos` to the renamed org.
