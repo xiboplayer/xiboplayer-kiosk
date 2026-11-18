@@ -1,5 +1,5 @@
 Name:           xiboplayer-kiosk
-Version:        0.5.3
+Version:        0.5.4
 Release:        1%{?dist}
 Summary:        Kiosk session scripts for Xibo digital signage players
 
@@ -201,6 +201,8 @@ install -Dm644 mkosi-extra/etc/chromium/policies/managed/xiboplayer-kiosk.json %
 /usr/bin/dconf update &>/dev/null || :
 
 %changelog
+* Wed Nov 18 2026 Pau Aliagas <linuxnow@gmail.com> - 0.5.4-1
+- RPMs built for Fedora 44 and 45
 * Fri Sep 05 2026 Pau Aliagas <pau@xiboplayer.org> - 0.5.3-1
 - Fedora 43 and 44 packages
 - RPM is published to dl.xiboplayer.org only from tag builds: pushes to
